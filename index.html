@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[BUSINESS NAME] — Friendly Neighborhood Tech Help</title>
+<link rel="icon" type="image/svg+xml" href="logo-monogram-fun.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7c3aed;
+    --pink: #ff4d8d;
+    --teal: #06d6a0;
+    --yellow: #ffd23f;
+    --orange: #ff7849;
+    --cream: #fff9f0;
+    --text: #22223b;
+    --navy: #22223b; /* alias so JS-independent references still resolve visually */
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: linear-gradient(180deg, #fdf3ff 0%, #fff9f0 40%);
+    line-height: 1.5;
+    padding-bottom: 74px;
+  }
+  .fun-font { font-family: 'Baloo 2', -apple-system, sans-serif; }
+
+  header {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 55%, var(--orange) 100%);
+    color: white;
+    padding: 52px 20px 46px;
+    text-align: center;
+    border-radius: 0 0 36px 36px;
+    box-shadow: 0 8px 24px rgba(124,58,237,0.25);
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .header-brand img { width: 92px; height: 92px; flex-shrink: 0; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.2)); }
+  header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    text-align: left;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    text-shadow: 0 3px 0 rgba(0,0,0,0.15);
+  }
+
+  .top-bar {
+    background: var(--cream);
+    padding: 16px 24px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  .top-brand-icon { width: 50px; height: 50px; border-radius: 14px; display: block; }
+  .top-brand-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--purple);
+    padding-left: 2px;
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  header p { margin: 0 auto; font-size: 1.08rem; color: #fff0f6; max-width: 560px; font-weight: 600; }
+
+  .cta {
+    display: inline-block;
+    margin-top: 26px;
+    background: linear-gradient(135deg, var(--teal), var(--yellow));
+    color: var(--text);
+    padding: 13px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1rem;
+    font-family: 'Baloo 2', sans-serif;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    transition: transform 0.15s;
+  }
+  .cta:hover { transform: scale(1.05) rotate(-1deg); }
+
+  main { max-width: 1000px; margin: 0 auto; padding: 40px 20px 60px; }
+  section { margin-bottom: 48px; }
+  h2 {
+    color: var(--purple);
+    font-size: 1.5rem;
+    border-bottom: 4px solid var(--teal);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+  }
+  .about p { font-size: 1.02rem; max-width: 700px; }
+  .hint { font-size: 0.9rem; color: #7a6f8a; margin: -10px 0 22px; }
+  .category-title {
+    font-weight: 700;
+    color: var(--purple);
+    margin: 30px 0 14px;
+    font-size: 1.15rem;
+    font-family: 'Baloo 2', sans-serif;
+  }
+  .category-title:first-of-type { margin-top: 0; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
+  .card { perspective: 1200px; height: 236px; cursor: pointer; }
+  .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(.34,1.56,.64,1); transform-style: preserve-3d; }
+  .card:hover .card-inner:not(.card.flipped .card-inner) { transform: scale(1.03) rotate(-0.5deg); }
+  .card.flipped .card-inner { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0; backface-visibility: hidden;
+    border-radius: 22px;
+    box-shadow: 0 4px 14px rgba(124,58,237,0.15);
+    padding: 16px; display: flex; flex-direction: column;
+    background: white;
+    border-top: 7px solid var(--purple);
+  }
+  .card-front { align-items: center; text-align: center; justify-content: center; }
+  .card-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(160deg, var(--purple), var(--pink));
+    color: white;
+    justify-content: space-between;
+    border-top: 7px solid var(--yellow);
+  }
+  .category-title:nth-of-type(1) + .card-grid .card-front { border-top-color: var(--purple); }
+  .category-title:nth-of-type(2) + .card-grid .card-front { border-top-color: var(--pink); }
+  .category-title:nth-of-type(3) + .card-grid .card-front { border-top-color: var(--teal); }
+  .category-title:nth-of-type(4) + .card-grid .card-front { border-top-color: var(--orange); }
+  .category-title:nth-of-type(5) + .card-grid .card-front { border-top-color: var(--yellow); }
+  .category-title:nth-of-type(6) + .card-grid .card-front { border-top-color: var(--purple); }
+  .category-title:nth-of-type(7) + .card-grid .card-front { border-top-color: var(--pink); }
+
+  .card.selected .card-front { outline: 3px solid var(--teal); }
+  .card.selected .card-back { outline: 3px solid var(--teal); }
+  .card-icon { font-size: 2.1rem; margin-bottom: 6px; }
+  .card-name { font-weight: 700; font-size: 1rem; margin-bottom: 8px; font-family: 'Baloo 2', sans-serif; }
+  .card-price { font-weight: 800; color: var(--purple); font-size: 1.1rem; margin-bottom: 10px; font-family: 'Baloo 2', sans-serif; }
+  .card-back .card-price { color: var(--yellow); }
+  .card-desc { font-size: 0.85rem; line-height: 1.4; overflow-y: auto; flex: 1; }
+  .flip-hint { font-size: 0.72rem; color: #b09fc9; margin-top: 4px; }
+  .card-back .flip-hint { color: #f0d9e6; }
+
+  .add-btn {
+    border: none; border-radius: 20px; padding: 9px 18px; font-weight: 800; font-size: 0.85rem;
+    cursor: pointer; background: linear-gradient(135deg, var(--teal), #00b894); color: white; margin-top: auto;
+    font-family: 'Baloo 2', sans-serif;
+  }
+  .card.selected .add-btn { background: linear-gradient(135deg, var(--orange), var(--pink)); }
+  .card-back .add-btn { background: rgba(255,255,255,0.2); border: 1px solid var(--yellow); }
+  .card.selected .card-back .add-btn { background: var(--yellow); color: var(--text); border-color: var(--yellow); }
+
+  .note { background: #fff3cd; border-left: 5px solid var(--yellow); padding: 14px 18px; border-radius: 10px; font-size: 0.92rem; margin-top: 24px; }
+  .contact-box { background: linear-gradient(135deg, var(--purple), var(--pink)); color: white; border-radius: 20px; padding: 34px; text-align: center; }
+  .contact-box h2 { color: white !important; border-color: rgba(255,255,255,0.4) !important; }
+  .contact-box a { color: var(--yellow); font-weight: 700; }
+  footer { text-align: center; padding: 24px 20px; font-size: 0.85rem; color: #9b8fb0; }
+
+  #quote-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white; padding: 13px 20px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 -2px 14px rgba(0,0,0,0.25); z-index: 100; cursor: pointer;
+  }
+  #quote-bar .qb-summary { font-weight: 700; font-size: 0.95rem; font-family: 'Baloo 2', sans-serif; }
+  #quote-bar .qb-total { font-weight: 800; font-size: 1.15rem; color: var(--yellow); font-family: 'Baloo 2', sans-serif; }
+
+  #quote-panel {
+    position: fixed; bottom: 58px; left: 0; right: 0; max-height: 60vh; overflow-y: auto;
+    background: white; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); border-radius: 20px 20px 0 0;
+    z-index: 99; padding: 16px 20px; display: none;
+  }
+  #quote-panel.open { display: block; }
+  #quote-panel h3 { margin: 0 0 12px; color: var(--purple); font-family: 'Baloo 2', sans-serif; }
+  .quote-line { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 2px dashed #eee; }
+  .quote-line .ql-name { flex: 1; font-size: 0.9rem; }
+  .quote-line .ql-controls { display: flex; align-items: center; gap: 6px; }
+  .qty-btn { width: 27px; height: 27px; border-radius: 50%; border: 2px solid var(--purple); background: white; color: var(--purple); font-weight: 800; cursor: pointer; }
+  .ql-qty { min-width: 20px; text-align: center; font-weight: 700; }
+  .ql-subtotal { min-width: 60px; text-align: right; font-weight: 800; color: var(--purple); }
+  .ql-remove { background: none; border: none; color: var(--orange); font-size: 1.1rem; cursor: pointer; }
+  .quote-empty { color: #a9a0b8; font-size: 0.9rem; padding: 10px 0; }
+  .quote-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .quote-actions button, .quote-actions a {
+    flex: 1; text-align: center; padding: 11px; border-radius: 14px; border: none; font-weight: 800;
+    cursor: pointer; text-decoration: none; font-family: 'Baloo 2', sans-serif;
+  }
+  .btn-clear { background: #f1e9f9; color: var(--purple); }
+  .btn-request { background: linear-gradient(135deg, var(--orange), var(--pink)); color: white; }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.7rem; text-align: center; }
+    .header-brand img { width: 64px; height: 64px; }
+    .header-brand { flex-direction: column; }
+    .card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .card { height: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <img src="logo-monogram-fun.svg" alt="[BUSINESS NAME] logo" class="top-brand-icon">
+  <div class="top-brand-text biz-name">[BUSINESS NAME]</div>
+</div>
+
+<header>
+  <div class="header-brand">
+    <img src="logo-mark-fun.svg" alt="[BUSINESS NAME] logo">
+    <h1 class="biz-name">[BUSINESS NAME]</h1>
+  </div>
+  <p id="hero-tagline">Friendly, patient tech help for setting up your phone, WiFi, printer, TV, and everything in between — right in your neighborhood.</p>
+  <a class="cta" href="#services">See Services</a>
+</header>
+
+<main>
+
+  <section class="about">
+    <h2>About</h2>
+    <p id="about-text">
+      Hi, I'm <span class="son-name">[SON'S NAME]</span>! I'm 13 and I love working with tech — phones, computers, WiFi, TVs, you name it.
+      I help friends and family get their devices set up and working right, without the wait or the big repair-shop
+      prices. If something's confusing or not working the way it should, I'm happy to come take a look.
+    </p>
+  </section>
+
+  <section id="services">
+    <h2>Services & Pricing</h2>
+    <p class="hint">Tap a card to see details. Hit "+ Add" to build a custom package — your total shows up at the bottom.</p>
+    <div id="cards-container"></div>
+
+    <p class="note">
+      <strong>Notes:</strong> <span id="notes-text">Flat rates cover jobs that usually take 15–30 minutes. Hourly items are added to your
+      package at 1 hour by default — adjust the hours in your package list below. Prices are for friends &amp; family
+      and may be adjusted for bigger projects or if parts/equipment are needed.</span>
+    </p>
+  </section>
+
+  <section id="contact" class="contact-box">
+    <h2>Book a Visit</h2>
+    <p>Text or call: <a href="tel:[PHONE NUMBER]" id="phone-link">[PHONE NUMBER]</a></p>
+    <p>Email: <a href="mailto:[EMAIL ADDRESS]" id="email-link">[EMAIL ADDRESS]</a></p>
+  </section>
+
+</main>
+
+<footer>
+  <p id="footer-text">&copy; 2026 <span class="biz-name">[BUSINESS NAME]</span>. Run by a 13-year-old, supervised by parents.</p>
+</footer>
+
+<div id="quote-bar">
+  <span class="qb-summary" id="qb-summary">No services selected</span>
+  <span class="qb-total" id="qb-total">$0</span>
+</div>
+<div id="quote-panel">
+  <h3>Your Package</h3>
+  <div id="quote-lines"></div>
+  <div class="quote-actions">
+    <button class="btn-clear" id="btn-clear">Clear All</button>
+    <a class="btn-request" id="btn-request" href="#">Request This Quote</a>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+const SHEET_CONFIG = {
+  servicesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS7XpCZOssJjnJT_DP57ik3l_uubLJJ2wRX_r59z_7Nrl2_xxpcHd647GyY8OkEKGfKVqK5MHyNHhiA/pub?gid=1987961296&single=true&output=csv',
+  settingsCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS7XpCZOssJjnJT_DP57ik3l_uubLJJ2wRX_r59z_7Nrl2_xxpcHd647GyY8OkEKGfKVqK5MHyNHhiA/pub?gid=0&single=true&output=csv'
+};
+
+let services = [
+  { id: 'iphone-setup',   category: 'Phones & Tablets',   icon: '📱', name: 'New iPhone/iPad Setup', price: 15, type: 'flat',
+    desc: 'Setting up your new device from the box, or transferring everything over from your old phone — contacts, photos, apps, and settings.' },
+  { id: 'icloud-setup',   category: 'Phones & Tablets',   icon: '📱', name: 'iCloud & Photo Backup', price: 10, type: 'flat',
+    desc: 'Getting iCloud, Photos, and automatic backups set up so you never lose anything.' },
+  { id: 'app-help',       category: 'Phones & Tablets',   icon: '📱', name: 'App Troubleshooting', price: 10, type: 'hourly',
+    desc: 'Help figuring out an app, fixing settings, or answering "how do I..." questions.' },
+
+  { id: 'wifi-setup',     category: 'WiFi & Networking',  icon: '📶', name: 'WiFi Router Setup', price: 20, type: 'flat',
+    desc: 'Setting up a new router or resetting your network so everything connects cleanly.' },
+  { id: 'wifi-deadzone',  category: 'WiFi & Networking',  icon: '📶', name: 'Dead Zone / Extender Fix', price: 15, type: 'hourly',
+    desc: 'Diagnosing weak WiFi spots and setting up range extenders or mesh points.' },
+  { id: 'smart-home',     category: 'WiFi & Networking',  icon: '🏠', name: 'Smart Home Device Setup', price: 15, type: 'flat',
+    desc: 'Setting up Alexa, Google Home, smart plugs, or other connected devices. Priced per device.' },
+
+  { id: 'printer-setup',  category: 'Printers',           icon: '🖨️', name: 'Wireless Printer Setup', price: 15, type: 'flat',
+    desc: 'Connecting your printer to your phone, computer, and WiFi network.' },
+  { id: 'printer-fix',    category: 'Printers',           icon: '🖨️', name: 'Printer Troubleshooting', price: 15, type: 'hourly',
+    desc: 'Fixing jams, driver issues, ink problems, or anything else giving your printer trouble.' },
+
+  { id: 'computer-setup', category: 'Computers',          icon: '💻', name: 'New Computer Setup', price: 25, type: 'flat',
+    desc: 'Unboxing and setting up a new computer — accounts, updates, and moving over your files.' },
+  { id: 'software-install', category: 'Computers',        icon: '💻', name: 'Software Install/Updates', price: 10, type: 'flat',
+    desc: 'Installing programs and getting everything updated and running smoothly.' },
+  { id: 'computer-cleanup', category: 'Computers',        icon: '💻', name: 'Slow Computer Cleanup', price: 15, type: 'hourly',
+    desc: 'Clearing out clutter, startup programs, and junk files to speed things back up.' },
+
+  { id: 'tv-setup',       category: 'TVs & Audio/Visual', icon: '📺', name: 'Smart TV Setup', price: 20, type: 'flat',
+    desc: 'Setting up streaming apps, signing into accounts, and programming the remote.' },
+  { id: 'soundbar-setup', category: 'TVs & Audio/Visual', icon: '🔊', name: 'Soundbar/Speaker Setup', price: 15, type: 'flat',
+    desc: 'Connecting and configuring your soundbar or speakers for the best sound.' },
+  { id: 'remote-setup',   category: 'TVs & Audio/Visual', icon: '📺', name: 'Universal Remote Programming', price: 10, type: 'flat',
+    desc: 'Programming one remote to control your TV, soundbar, and streaming box.' },
+
+  { id: 'cable-mgmt',     category: 'Cords & Cables',     icon: '🔌', name: 'Cord/Cable Organizing', price: 12, type: 'flat',
+    desc: 'Bundling and hiding cords behind your TV or desk for a cleaner look.' },
+  { id: 'hdmi-fix',       category: 'Cords & Cables',     icon: '🔌', name: 'HDMI/Cable Troubleshooting', price: 10, type: 'flat',
+    desc: 'Fixing "no signal" issues, wrong inputs, or mismatched cables.' },
+
+  { id: 'general-help',   category: 'Anything Else',      icon: '🛠️', name: 'General Tech Help', price: 10, type: 'hourly',
+    desc: 'Not sure what\'s wrong? Bring it up and we\'ll figure it out together.' },
+];
+
+const selections = {};
+
+function priceLabel(s) {
+  return s.type === 'hourly' ? `$${s.price}/hr` : `$${s.price} flat`;
+}
+
+function buildCards() {
+  const container = document.getElementById('cards-container');
+  const categories = [...new Set(services.map(s => s.category))];
+  let html = '';
+  categories.forEach(cat => {
+    html += `<div class="category-title">${cat}</div><div class="card-grid">`;
+    services.filter(s => s.category === cat).forEach(s => {
+      html += `
+        <div class="card" id="card-${s.id}" data-id="${s.id}">
+          <div class="card-inner">
+            <div class="card-face card-front">
+              <div class="card-icon">${s.icon}</div>
+              <div class="card-name">${s.name}</div>
+              <div class="card-price">${priceLabel(s)}</div>
+              <button class="add-btn" data-id="${s.id}">+ Add</button>
+              <div class="flip-hint">tap for details</div>
+            </div>
+            <div class="card-face card-back">
+              <div class="card-desc">${s.desc}</div>
+              <div>
+                <div class="card-price">${priceLabel(s)}</div>
+                <button class="add-btn" data-id="${s.id}">+ Add</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleSelection(btn.dataset.id);
+    });
+  });
+}
+
+function toggleSelection(id) {
+  if (selections[id]) {
+    delete selections[id];
+  } else {
+    selections[id] = 1;
+  }
+  refreshUI();
+}
+
+function changeQty(id, delta) {
+  if (!selections[id]) return;
+  selections[id] = Math.max(1, Math.min(20, selections[id] + delta));
+  refreshUI();
+}
+
+function refreshUI() {
+  services.forEach(s => {
+    const card = document.getElementById(`card-${s.id}`);
+    const isSelected = !!selections[s.id];
+    card.classList.toggle('selected', isSelected);
+    card.querySelectorAll('.add-btn').forEach(b => b.textContent = isSelected ? '✓ Added' : '+ Add');
+  });
+
+  const ids = Object.keys(selections);
+  const linesEl = document.getElementById('quote-lines');
+  let total = 0;
+
+  if (ids.length === 0) {
+    linesEl.innerHTML = '<div class="quote-empty">No services added yet — tap "+ Add" on any card above.</div>';
+  } else {
+    linesEl.innerHTML = ids.map(id => {
+      const s = services.find(sv => sv.id === id);
+      const qty = selections[id];
+      const subtotal = s.price * qty;
+      total += subtotal;
+      const qtyLabel = s.type === 'hourly' ? 'hrs' : 'qty';
+      return `
+        <div class="quote-line">
+          <div class="ql-name">${s.name} <span style="color:#888;">(${priceLabel(s)})</span></div>
+          <div class="ql-controls">
+            <button class="qty-btn" data-action="minus" data-id="${id}">−</button>
+            <span class="ql-qty">${qty} ${qtyLabel}</span>
+            <button class="qty-btn" data-action="plus" data-id="${id}">+</button>
+          </div>
+          <div class="ql-subtotal">$${subtotal}</div>
+          <button class="ql-remove" data-action="remove" data-id="${id}">✕</button>
+        </div>`;
+    }).join('');
+  }
+
+  document.getElementById('qb-summary').textContent =
+    ids.length === 0 ? 'No services selected' : `${ids.length} service${ids.length > 1 ? 's' : ''} selected — tap to view`;
+  document.getElementById('qb-total').textContent = `$${total}`;
+
+  const emailBody = ids.length === 0
+    ? 'Hi! I would like to request a tech help quote.'
+    : 'Hi! I would like to request the following package:%0D%0A%0D%0A' +
+      ids.map(id => {
+        const s = services.find(sv => sv.id === id);
+        const qty = selections[id];
+        return `- ${s.name} x${qty} (${priceLabel(s)}) = $${s.price * qty}`;
+      }).join('%0D%0A') +
+      `%0D%0A%0D%0ATotal: $${total}`;
+  const contactEmail = window.CONTACT_EMAIL || '[EMAIL ADDRESS]';
+  document.getElementById('btn-request').href = `mailto:${contactEmail}?subject=Tech Help Quote Request&body=${emailBody}`;
+
+  linesEl.querySelectorAll('[data-action="plus"]').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, 1)));
+  linesEl.querySelectorAll('[data-action="minus"]').forEach(b => b.addEventListener('click', () => changeQty(b.dataset.id, -1)));
+  linesEl.querySelectorAll('[data-action="remove"]').forEach(b => b.addEventListener('click', () => { delete selections[b.dataset.id]; refreshUI(); }));
+}
+
+document.getElementById('quote-bar').addEventListener('click', () => {
+  document.getElementById('quote-panel').classList.toggle('open');
+});
+document.getElementById('btn-clear').addEventListener('click', () => {
+  Object.keys(selections).forEach(id => delete selections[id]);
+  refreshUI();
+});
+
+function applySettings(map) {
+  if (map.business_name) {
+    document.title = `${map.business_name} — Friendly Neighborhood Tech Help`;
+    document.querySelectorAll('.biz-name').forEach(el => el.textContent = map.business_name);
+  }
+  if (map.son_name) {
+    document.querySelectorAll('.son-name').forEach(el => el.textContent = map.son_name);
+  }
+  if (map.tagline) {
+    const taglineEl = document.getElementById('hero-tagline');
+    if (taglineEl) taglineEl.textContent = map.tagline;
+  }
+  if (map.about_text) {
+    const aboutEl = document.getElementById('about-text');
+    if (aboutEl) aboutEl.textContent = map.about_text;
+  }
+  if (map.footer_text) {
+    const footerEl = document.getElementById('footer-text');
+    if (footerEl) footerEl.textContent = map.footer_text;
+  }
+  if (map.notes_text) {
+    const notesEl = document.getElementById('notes-text');
+    if (notesEl) notesEl.textContent = map.notes_text;
+  }
+  if (map.phone) {
+    const phoneEl = document.getElementById('phone-link');
+    if (phoneEl) {
+      phoneEl.textContent = map.phone;
+      phoneEl.href = `tel:${map.phone.replace(/[^0-9+]/g, '')}`;
+    }
+  }
+  if (map.email) {
+    const emailEl = document.getElementById('email-link');
+    if (emailEl) {
+      emailEl.textContent = map.email;
+      emailEl.href = `mailto:${map.email}`;
+    }
+    window.CONTACT_EMAIL = map.email;
+  }
+}
+
+async function loadFromSheets() {
+  if (SHEET_CONFIG.servicesCsvUrl) {
+    try {
+      const res = await fetch(SHEET_CONFIG.servicesCsvUrl);
+      const csvText = await res.text();
+      const rows = Papa.parse(csvText, { header: true, skipEmptyLines: true }).data;
+      const loaded = rows
+        .filter(r => r.id && r.name)
+        .map(r => ({
+          id: String(r.id).trim(),
+          category: (r.category || 'Other').trim(),
+          icon: (r.icon || '🔧').trim(),
+          name: r.name.trim(),
+          price: Number(r.price) || 0,
+          type: (r.type || 'flat').trim().toLowerCase(),
+          desc: (r.description || r.desc || '').trim()
+        }));
+      if (loaded.length) services = loaded;
+    } catch (err) {
+      console.warn('Could not load services from Google Sheet — using built-in defaults.', err);
+    }
+  }
+
+  if (SHEET_CONFIG.settingsCsvUrl) {
+    try {
+      const res = await fetch(SHEET_CONFIG.settingsCsvUrl);
+      const csvText = await res.text();
+      const rows = Papa.parse(csvText, { header: true, skipEmptyLines: true }).data;
+      const map = {};
+      rows.forEach(r => { if (r.key) map[String(r.key).trim()] = String(r.value || '').trim(); });
+      applySettings(map);
+    } catch (err) {
+      console.warn('Could not load settings from Google Sheet — using built-in defaults.', err);
+    }
+  }
+}
+
+(async function init() {
+  await loadFromSheets();
+  buildCards();
+  refreshUI();
+})();
+</script>
+
+</body>
+</html>
