@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bgGradMonoFun" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#ff4d8d"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="200" height="200" rx="40" fill="url(#bgGradMonoFun)"/>
+  <path d="M20,55 L20,20 L55,20" fill="none" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="20" cy="55" r="4" fill="#ffd23f"/>
+  <circle cx="55" cy="20" r="4" fill="#ffd23f"/>
+  <path d="M180,145 L180,180 L145,180" fill="none" stroke="#ffd23f" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="180" cy="145" r="4" fill="#ffd23f"/>
+  <circle cx="145" cy="180" r="4" fill="#ffd23f"/>
+  <text x="100" y="128" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="80" fill="#ffffff" text-anchor="middle" letter-spacing="-2">NTK</text>
+  <circle cx="150" cy="148" r="7" fill="#06d6a0"/>
+</svg>
